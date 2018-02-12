@@ -1,1 +1,1 @@
- # SportsNutritionIncentory
+ # SportsNutritionInventory
