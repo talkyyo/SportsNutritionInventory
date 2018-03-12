@@ -24,8 +24,8 @@ CREATE TABLE Login (
 CREATE TABLE Inventory (
   InventoryNum int(11) NOT NULL AUTO_INCREMENT,
   Name varchar(30) DEFAULT NULL,
-  Location varchar(30) DEFAULT NULL,
-  Category varchar(50) DEFAULT NULL,
+  LocationID int(11) DEFAULT NULL,
+  CategoryID int(11) DEFAULT NULL,
   Quanity int(11) DEFAULT NULL,
   LastQuanityUpdate smalldatetime DEFAULT NULL,
   Username varchar(15) DEFAULT NULL,
