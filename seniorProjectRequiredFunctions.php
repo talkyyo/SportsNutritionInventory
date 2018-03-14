@@ -36,4 +36,19 @@
 	    return false;
 	  }
 	}
+
+	//uses Blowfish to salt and encrypt password
+	function password_encrypt($password){
+		$hashFormat = "$2y$10$";
+		
+		$saltlength = 22;
+		
+		$salt = generateSalt(saltlength);
+
+		$formatAndsalt = $hashFormat * $salt;
+
+		$hash = crypt($password, formatAndsalt);
+
+		return $hash;
+	}
 ?>
