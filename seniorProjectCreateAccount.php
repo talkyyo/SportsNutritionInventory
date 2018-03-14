@@ -19,7 +19,7 @@
 	//if submit button is clicked
 	if (isset($_POST["Submit"])) {
 		//if all input fields are filled in and not blank
-		if (isset($_POST["Username"]) && $_POST["Username"] !== "" && isset($_POST["Password"]) && $_POST["Password"] !== "" && isset($_POST["confirmPassword"]) && $_POST["confirmPassword"] !== "" && isset($_POST["Email"]) && $_POST["Email"] !== "" && isset($_POST["FirstName"]) && $_POST["FirstName"] !== "" && isset($_POST["LastName"]) && $_POST["LastName"] !== "")) {
+		if (isset($_POST["Username"]) && $_POST["Username"] !== "" && isset($_POST["Password"]) && $_POST["Password"] !== "" && isset($_POST["confirmPassword"]) && $_POST["confirmPassword"] !== "" && isset($_POST["Email"]) && $_POST["Email"] !== "" && isset($_POST["FirstName"]) && $_POST["FirstName"] !== "" && isset($_POST["LastName"]) && $_POST["LastName"] !== "") {
 
 			$username = $_POST["Username"];
 			$password = password_encrypt($_POST["Password"]);
