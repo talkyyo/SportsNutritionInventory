@@ -19,12 +19,13 @@
 	//if submit button is pressed
 	if (isset($_POST["Submit"])) {
 		if (isset($_POST["Username"]) && $_POST["Username"] !== "" && isset($_POST["Password"]) && $_POST["Password"] !== "") {
+			
 			$username = $_POST["Username"];
 			$password = $_POST["Password"];
 
 			$query = "SELECT * FROM ";
-			$query .= "User WHERE ";
-			$query .= "Username = '".$Username."' ";
+			$query .= "Login WHERE ";
+			$query .= "Username = '".$username."' ";
 			$query .= "LIMIT 1";
 
 			$result = $mysqli->query($query);
@@ -33,23 +34,17 @@
 			if ($result && $result->num_rows > 0) {
 				$row = $result->fetch_assoc();
 				//checks if hashed entered password matches stored hashed password
-				if ($username == $row["Username"]) {
-					if (passwordCheck($password, $row["Password"])) {
+				if (passwordCheck($password, $row["Password"])) {
 					$_SESSION["Username"] = $row["Username"];
 					header("Location: seniorProjectLanding.php");
 					exit;
-					}
-					else {
-						$_SESSION["error"] = "Password not a match";
-						header("Location: seniorProjectLogin.php");
-						exit;
-					}
-				}	
+				}
 				else {
-					$_SESSION["error"] = "Username not found";
+					$_SESSION["error"] = "Username/Password does not match!";
+					echo("<script>console.log('PHP: ".$data."');</script>");
 					header("Location: seniorProjectLogin.php");
 					exit;
-				}	
+				}
 			}			
 		}
 	}
@@ -66,21 +61,28 @@
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
   </head>
+  <style>
+	.container {
+	    width: 90%;
+	    padding-top: 80px;
+	    position: absolute-center;
+	}
+  </style>
 
   &nbsp
 
-	<body>
+	<body style = "background-color: #00336f">
   	<!-- form for login -->
   		<div class="container">
-  			<div class="jumbotron">
+  			<div class="jumbotron" style="border: 2px solid red">
   				<h4 class="text-center">Please Login</h4>
   				<form action="seniorProjectLogin.php" method="POST">
   					<div class="form-group">
-  						<label for="Username">Username</label>
+  						<label for="Username">Username:</label>
   						<input type="text" class="form-control" name="Username" id="Username" placeholder="Username" required>
   					</div>
   					<div class="form-group">
-  						<label for="Password">Password</label>
+  						<label for="Password">Password:</label>
   						<input type="password" class="form-control" name="Password" id="Password" placeholder="Password" required>
   					</div>
 					<div class="form-group">
