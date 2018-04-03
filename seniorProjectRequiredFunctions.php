@@ -25,7 +25,23 @@
 	  
 		return $salt;
 	}
-	
+
+	//uses Blowfish to salt and encrypt password
+	function password_encrypt($password){
+		$hashFormat = "$2y$10$";
+		
+		$saltLength = 22;
+		
+		$salt = generateSalt($saltLength);
+
+		$formatAndSalt = $hashFormat . $salt;
+
+		$hash = crypt($password, $formatAndSalt);
+
+		return $hash;
+	}
+
+
 	function passwordCheck($password, $existing_hash) {
 	  // existing hash contains format and salt at start
 	  $hash = crypt($password, $existing_hash);
@@ -37,18 +53,15 @@
 	  }
 	}
 
-	//uses Blowfish to salt and encrypt password
-	function password_encrypt($password){
-		$hashFormat = "$2y$10$";
-		
-		$saltlength = 22;
-		
-		$salt = generateSalt(saltlength);
+	function debug_to_console( $data, $context = 'Debug in Console' ) {
 
-		$formatAndsalt = $hashFormat * $salt;
+    // Buffering to solve problems frameworks, like header() in this and not a solid return.
+    ob_start();
 
-		$hash = crypt($password, formatAndsalt);
+    $output  = 'console.info( \'' . $context . ':\' );';
+    $output .= 'console.log(' . json_encode( $data ) . ');';
+    $output  = sprintf( '<script>%s</script>', $output );
 
-		return $hash;
+    echo $output;
 	}
 ?>
