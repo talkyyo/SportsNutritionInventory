@@ -57,6 +57,7 @@ CREATE TABLE Inventory (
   Quanity int(11) DEFAULT NULL,
   LastQuanityUpdate datetime DEFAULT NULL,
   Username varchar(15) NOT NULL,
+  DescriptionInventory varchar(50) DEFAULT NULL,
   PRIMARY KEY (InventoryNum)
 )ENGINE=INNODB;
 
@@ -71,6 +72,7 @@ CREATE TABLE Discarded (
   QuanityDiscarded int(11) DEFAULT NULL,
   LastDiscardUpdate datetime DEFAULT NULL,
   Username varchar(15) NOT NULL,
+  DescriptionDiscarded varchar(50) DEFAULT NULL,
   PRIMARY KEY (DiscardedInventoryNum)
 )ENGINE=INNODB;
 
