@@ -14,8 +14,13 @@
 	//if submit button is clicked
 	if (isset($_POST["Submit"])) {
 
-			//checks if item/location combination already exists
-			$itemCheck = mysqli_query("SELECT * FROM Inventory WHERE Name = ".$_POST['Name']." AND LocationName = ".$_POST['LocationID']."");
+      		$itemname = $_POST["Name"];
+      		$location = $_POST["LocationID"];
+      		$category = $_POST["CategoryID"];
+      		$quantity = $_POST["Quantity"];
+
+      //checks if item/location combination already exists
+			$itemCheck = mysqli_query("SELECT * FROM Inventory WHERE Name = ".$_POST['Name']." AND LocationID = ".$_POST['LocationID']."");
 			if(mysqli_num_rows($itemCheck) >= 1) {
 				$_SESSION["error"] = "Item/Location combination already exists!";
 				header("Location: seniorProjectLanding.php");
@@ -25,24 +30,25 @@
 			}
 
 			//query to insert into inventory table
-			$query = "INSERT INTO Inventory ";
-			$query .= "(Name, LocationID, CategoryID, Quantity, LastQuantityUpdate, Username) ";
-			$query .= "VALUES ('";
-			$query .= "('".$_POST["Name"]."', ";
-      		$query .= "'".$_POST["LocationID"]."', ";
-      		$query .= "'".$_POST["CategoryID"]."', ";
-      		$query .= "'".$_POST["Quantity"]."', ";
-      		$query .= "'".CURRENT_TIMESTAMP()."', ";
-      		$query .= "'".$_SESSION["Username"]."')";
+			$itemQuery = "INSERT INTO Inventory ";
+			$itemQuery .= "(Name, LocationID, CategoryID, Quantity, LastQuantityUpdate, Username) ";
+			$itemQuery .= "VALUES (";
+			$itemQuery .= "'".$itemname."', ";
+      		$itemQuery .= "".$location.", ";
+      		$itemQuery .= "".$category.", ";
+      		$itemQuery .= "".$quantity.", ";
+      		$itemQuery .= "NOW(), ";
+      		$itemQuery .= "'".$_SESSION["Username"]."')";
 
-			$itemResult = $mysqli->query($query);
+      		$itemResult = $mysqli->query($itemQuery);
 
 			if ($itemResult) {
-				$_SESSION["alert"] = $_POST["Name"]." has been added to Inventory!";
+				$_SESSION["alert"] = $itemname." has been added to Inventory!";
 				header("Location: seniorProjectLanding.php");
 			}
 			else {
-				$_SESSION["error"] = "Could not add item!";
+        		$_SESSION["error"] = "Could not add item!";
+        		// $_SESSION["error"] = '<script>console.log("'.$itemQuery.'")</script>';
 				header("Location: seniorProjectLanding.php");
 			}
 	}
@@ -273,5 +279,4 @@
   				</form>
   			</div>
   		</div>
-
 </body>    
