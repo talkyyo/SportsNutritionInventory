@@ -33,6 +33,20 @@
     $categories[] = $row['CategoryName'];
   }
 
+  if (isset($_POST["submit"])) {
+
+      $searchResults = $_POST["searchResults"];
+      $dropdownSelection = $_POST["sortDropdown"];
+
+      if ($searchResults !== "") {
+        header("Location: seniorProjectFixedSearch.php?sortBy=".$dropdownSelection."&searchResults=".$searchResults);
+      }
+      else {
+        header("Location: seniorProjectFixedSearch.php?sortBy=".$dropdownSelection);
+      }
+
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -179,6 +193,35 @@
   display: block;
 }
 
+/*styling for search button*/
+.btn-primary {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #00336f;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #fff;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0069d9;
+  background-image: none;
+  border-color: #0062cc;
+}
+
   </style>
 
 <body>
@@ -262,30 +305,35 @@
             <div class="container-fluid">
                 <h1 style="font-size: 75px" align="center">Inventory</h1>
                 &nbsp;
-                <div id="custom-search-input" align="center">
-                            <div class="input-group" style="width: 80%">
-                                <input type="text" class="search-query form-control" placeholder="Search" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <span class=" glyphicon glyphicon-search"></span>
-                                    </button>
-                                </span>
-                            </div>
+              <form action='seniorProjectLanding.php' method='POST' class='form-group'>
+                <div class="form-horizontal" align="center">
+                  <input type="text" name="searchResults" 
+                    class="form-control" 
+                    placeholder="Search"
+                    style="width:80%; max-width:80%; display:inline-block"/>
+
+                  <button type="submit" 
+                    class="btn btn-primary"
+                    name="submit"
+                    style="margin-left:-8px; margin-top:-2px; min-height:36px;">
+                    <i class="glyphicon glyphicon-search"></i>
+                  </button>
                 </div>
                 &nbsp;
                 <h4 align="center">Sort by:</h4>
 
                 <div class="row" align="center">
-                    <div class="form-group" style="width: 50%" align="center">
-                      <select id="sortDropdown" name ="sortDropdown" class ="form-control">
-                          <option value = "Name" selected="selected">Item Name</option>;
-                          <option value = "LocationID">Location</option>;
-                          <option value = "CategoryID">Category</option>;
-                          <option value = "Quantity">Quantity</option>;
-                          <option value = "LastQuantityUpdate">Most Recently Updated</option>;
-                      </select>
-                    </div>
+                  <div class="form-group" style="width: 50%" align="center">
+                    <select id="dropdownForm" name="sortDropdown" class="form-control">
+                      <option value="Name">Item Name</option>;
+                      <option value="LocationID">Location</option>;
+                      <option value="CategoryID">Category</option>;
+                      <option value="Quantity">Quantity</option>;
+                      <option value="LastQuantityUpdate">Most Recently Updated</option>;
+                    </select>
+                  </div>
                 </div>
+              </form>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="container-fluid">
                   <div class="jumbotron">
@@ -305,7 +353,7 @@
                           <?php
                               //query to show all items in inventory
                               $inventoryQuery = "SELECT * ";
-                              $inventoryQuery .= "FROM Inventory NATURAL JOIN User NATURAL JOIN Location NATURAL JOIN Category";
+                              $inventoryQuery .= "FROM Inventory NATURAL JOIN User NATURAL JOIN Location NATURAL JOIN Category ORDER BY Name";
 
                               $inventoryResult = $mysqli->query($inventoryQuery);
 
@@ -318,11 +366,11 @@
                                         echo "<th><center>".$row['Quantity']."</center></th>";
                                         echo "<th><center>".$row['LastQuantityUpdate']."</center></th>";
                                         echo "<th><center>".$row['FirstName'].' '.$row['LastName']."</center></center></th>";
-                                        echo "<th>".$row['DescriptionInventory']."</center></th>";
+                                        echo "<th><center>".$row['DescriptionInventory']."</center></th>";
                                         echo "<td><center><div class='dropdown'>";
                                           echo "<button class='btn btn-danger dropdown-toggle' type='button' data-toggle='dropdown'>Select Option <span class ='caret'></span></button>";
                                           echo "<ul class='dropdown-menu'>";
-                                            echo "<li><a href='seniorProjectEditUpdateItem.php?itemID=".$row['InventoryNum']."'>Update Item</a></li>";
+                                            echo "<li><a href='seniorProjectEditUpdateItem.php?itemID=".$row['InventoryNum']."'>Edit/Update Item</a></li>";
                                             echo "<li><a href='seniorProjectEditUpdateItem.php?itemID=".$row['InventoryNum']."'>Move Item</a></li>";
                                             echo "<li><a href='seniorProjectEditUpdateItem.php?itemID=".$row['InventoryNum']."'>Discard Item</a></li>";
                                             echo "<li><a href='seniorProjectDeleteItem.php?itemID=".$row['InventoryNum']."'>Delete Item</a></li>";
