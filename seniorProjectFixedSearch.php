@@ -260,15 +260,13 @@
           <ul class="sidebar-nav" id="sidebar">
             <li class="sub-sidebar-brand"><a href="seniorProjectLanding.php">&middot;&nbsp;&nbsp;Inventory<i
                 class="fa fa-caret-down" aria-hidden="true"></i></a>
-            <li class="sub-sidebar-brand"><a href="seniorProjectLanding.php">&middot;&nbsp;&nbsp;Discarded Inventory<i
-                class="fa fa-caret-down" aria-hidden="true"></i></a>
-            <li class="sub-sidebar-brand"><a href="#/Category">&middot;&nbsp;&nbsp;Item<i
+            <li class="sub-sidebar-brand"><a href="#/Category">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Item<i
                 class="fa fa-caret-down" aria-hidden="true"></i></a>
               <ul class="sub-menu">
-                  <li class="sub-sidebar-brand"><a href="seniorProjectAddItem.php">&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Item</i><span class="sub_icon fa fa-hdd-o"></span></a></li>
+                  <li class="sub-sidebar-brand"><a href="seniorProjectAddItem.php">&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Item</i><span class="sub_icon fa fa-hdd-o"></span></a></li>
               </ul>
             </li>
-            <li class="sub-sidebar-brand"><a href="#/Location">&middot;&nbsp;&nbsp;Location<i
+            <li class="sub-sidebar-brand"><a href="#/Location">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Location<i
                 class="fa fa-caret-down" aria-hidden="true"></i></a>
               <ul class="sub-menu">
                   <script>
@@ -277,14 +275,14 @@
 
                   var html = '';
                   for (var i = 0; i < locationList.length; i++) {
-                    html += "<li class='sub-sidebar-brand'><a href='" + locationList[i] + "'>&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectSidebarSearch.php?searchID=" + locationList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
                   }
                   document.write(html);
                   </script>
-                  <li class="sub-sidebar-brand"><a href="seniorProjectAddLocation.php">&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Location</i><span class="sub_icon fa fa-hdd-o"></span></a></li>               
+                  <li class="sub-sidebar-brand"><a href="seniorProjectAddLocation.php">&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Location</i><span class="sub_icon fa fa-hdd-o"></span></a></li>               
               </ul>
             </li>
-            <li class="sub-sidebar-brand"><a href="#/Category">&middot;&nbsp;&nbsp;Category<i
+            <li class="sub-sidebar-brand"><a href="#/Category">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Category<i
                 class="fa fa-caret-down" aria-hidden="true"></i></a>
               <ul class="sub-menu">
                   <script>
@@ -293,11 +291,42 @@
 
                   var html = '';
                   for (var i = 0; i < categoryList.length; i++) {
-                    html += "<li class='sub-sidebar-brand'><a href='" + categoryList[i] + "'>&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectSidebarSearch.php?searchID=" + categoryList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
                   }
                   document.write(html);
                   </script>   
-                  <li class="sub-sidebar-brand"><a href="seniorProjectAddCategory.php">&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Category</i><span class="sub_icon fa fa-hdd-o"></span></a></li>
+                  <li class="sub-sidebar-brand"><a href="seniorProjectAddCategory.php">&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Category</i><span class="sub_icon fa fa-hdd-o"></span></a></li>
+              </ul>
+            </li>
+            <li class="sub-sidebar-brand"><a href="seniorProjectDiscarded.php">&middot;&nbsp;&nbsp;Discarded Inventory<i class="fa fa-caret-down" aria-hidden="true"></i></a>
+          <li class="sub-sidebar-brand"><a href="#/Location">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Location<i
+                class="fa fa-caret-down" aria-hidden="true"></i></a>
+              <ul class="sub-menu">
+                  <script>
+                  //loops for printing all locations in database in sidebar
+                  var locationList = <?php echo json_encode($locations); ?>;
+
+                  var html = '';
+                  for (var i = 0; i < locationList.length; i++) {
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectDiscardedSidebarSearch.php?searchID=" + locationList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                  }
+                  document.write(html);
+                  </script>               
+              </ul>
+            </li>    
+          <li class="sub-sidebar-brand"><a href="#/Category">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Category<i
+                class="fa fa-caret-down" aria-hidden="true"></i></a>
+              <ul class="sub-menu">
+                  <script>
+                  //loops for printing all locations in database in sidebar
+                  var categoryList = <?php echo json_encode($categories); ?>;
+
+                  var html = '';
+                  for (var i = 0; i < categoryList.length; i++) {
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectDiscardedSidebarSearch.php?searchID=" + categoryList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                  }
+                  document.write(html);
+                  </script>
               </ul>
             </li>
           </ul>
@@ -309,7 +338,7 @@
             <div class="container-fluid">
                 <h1 style="font-size: 75px" align="center">Inventory</h1>
                 &nbsp;
-              <form action='seniorProjectLanding.php' method='POST' class='form-group'>
+              <form action='seniorProjectFixedSearch.php' method='POST' class='form-group'>
                 <div class="form-horizontal" align="center">
                   <input type="text" name="searchResults" 
                     class="form-control" 
@@ -384,7 +413,7 @@
                           <?php
                               //query to show all items in inventory
                               $inventoryQuery = "SELECT * ";
-                              $inventoryQuery .= "FROM Inventory NATURAL JOIN User NATURAL JOIN Location NATURAL JOIN Category WHERE Name LIKE '%".$searchSelection."%' OR LocationName LIKE '%".$searchSelection."%' OR CategoryName LIKE '%".$searchSelection."%' OR Quantity LIKE '%".$searchSelection."%' OR LastQuantityUpdate LIKE '%".$searchSelection."%' OR FirstName LIKE '%".$searchSelection."%' OR LastName LIKE '%".$searchSelection."%' OR DescriptionInventory LIKE '%".$searchSelection."%' ORDER BY ".$sortSelection." DESC";
+                              $inventoryQuery .= "FROM Inventory NATURAL JOIN User NATURAL JOIN Location NATURAL JOIN Category WHERE Name LIKE '%".$searchSelection."%' OR LocationName LIKE '%".$searchSelection."%' OR CategoryName LIKE '%".$searchSelection."%' OR Quantity LIKE '%".$searchSelection."%' OR LastQuantityUpdate LIKE '%".$searchSelection."%' OR FirstName LIKE '%".$searchSelection."%' OR LastName LIKE '%".$searchSelection."%' OR DescriptionInventory LIKE '%".$searchSelection."%' ORDER BY ".$sortSelection."";
 
                               $inventoryResult = $mysqli->query($inventoryQuery);
 
