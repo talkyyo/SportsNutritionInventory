@@ -1,3 +1,12 @@
+<style>
+.alert{
+    position: fixed;
+    top: 50px;
+    left: 2%;
+    width: 96%;
+}
+</style>
+
 <?php
 	
 	//starts new session or resumes existing session
@@ -8,6 +17,7 @@
 		// Error message
 		if (isset($_SESSION["error"])) {
 			$output="<div class='alert alert-danger fade in'>";
+			$output.="<button type='button' class='close' data-dismiss='alert'>&times;</button>";
   			$output.="<strong>Error!</strong> ".$_SESSION["error"];
 			$output.="</div>";
 			
@@ -20,8 +30,8 @@
 		if (isset($_SESSION["alert"])) {
 			
 			$output="<div class='alert alert-success fade in'>";
+			$output.="<button type='button' class='close' data-dismiss='alert'>&times;</button>";
   			$output.="<strong>Success!</strong> ".$_SESSION["alert"];
-  			$output.="<a class='close' data-dismiss='alert' aria-label='close'>&times;</a>";
 			$output.="</div>";
 			
 			// clear message after use
@@ -32,7 +42,7 @@
 
 	// Verifies that a user is logged in, if not, pushes them back to Login
 	function verifyLogin(){
-		if(!isset($_SESSION["userID"]) && $_SESSION["userID"] == NULL){
+		if(!isset($_SESSION["Username"]) && $_SESSION["Username"] == NULL){
 			$_SESSION["error"] = "You must login first!";
 			header("Location: seniorProjectLogin.php");
 			exit;
