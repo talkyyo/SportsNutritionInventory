@@ -16,6 +16,12 @@
 	//if submit button is clicked
 	if (isset($_POST["Submit"])) {
 
+	  if ($_POST['newLocation'] === ""){
+	  	$_SESSION['error'] = "There is no other location in the database to move this item! Item move cancelled!";
+	  	header("Location: seniorProjectLanding.php");
+	  	exit;
+	  }
+
       //get info from item you are moving
       $infoQuery = "SELECT * FROM Inventory NATUAL JOIN Location WHERE InventoryNum = '".$itemID."'";
       $infoResult = $mysqli->query($infoQuery);
@@ -29,9 +35,9 @@
       $description = $infoRow["DescriptionInventory"];
 
 			//query to decrease quantity in item selected
-			$itemUpdateQuery = "UPDATE Inventory SET ";
-			$itemUpdateQuery .= "Name = '".$itemname."', ";
-			$itemUpdateQuery .= "LocationID = ".$location.", ";
+	  $itemUpdateQuery = "UPDATE Inventory SET ";
+	  $itemUpdateQuery .= "Name = '".$itemname."', ";
+	  $itemUpdateQuery .= "LocationID = ".$location.", ";
       $itemUpdateQuery .= "CategoryID = ".$category.", ";
       $itemUpdateQuery .= "Quantity = ".$newQuantity.", ";
       $itemUpdateQuery .= "LastQuantityUpdate = NOW(), ";
@@ -226,7 +232,7 @@
 
 .container {
 	    width: 90%;
-	    padding-top: 180px;
+	    padding-top: 100px;
 	    position: absolute-center;
 }
 
@@ -283,6 +289,8 @@
     </nav>
 
     <div class="container">
+      <h1 style="font-size: 75px" align="center">Move Item</h1>
+                &nbsp;
   			<div class="jumbotron">
   				<?php
               if (isset($_GET["itemID"]) && $_GET["itemID"] !== "") {
@@ -313,16 +321,16 @@
                     echo "<div class='form-group'>";
                     echo "<label for='newLocation'>Location to Move Product:</label>";
                     echo "<select id='newLocation' name ='newLocation' class='form-control'>";
-
-                    $hideCurrentLocationQuery = "Select * FROM Location WHERE InventoryNum = '".$_GET['itemID']."'";
-                    $hideCurrentLocationResult = $mysqli->query($hideCurrentLocationQuery);
                     
-                    $newLocationQuery = "Select * FROM Location";
+                    $newLocationQuery = "Select * FROM Location NATURAL JOIN Inventory";
                     $newLocationResult = $mysqli->query($newLocationQuery);
                     if ($newLocationResult && $newLocationResult->num_rows >= 1) {
                         while ($newLocationRow = $newLocationResult->fetch_assoc()) {
-                            if ($newLocationRow['LocationID'] !== $row["LocationID"]) {
+                            if ($newLocationRow['LocationID'] !== $row["LocationID"] && $newLocationRow['Name'] === $row['Name']) {
                                 echo "<option selected='selected' value = ".$newLocationRow['LocationID'].">".$newLocationRow['LocationName']."</option>";
+                            }
+                            else {
+                            	echo "<option value=''></option>";
                             }
                         }
                     }
