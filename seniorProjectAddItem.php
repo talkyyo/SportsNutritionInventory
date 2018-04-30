@@ -11,19 +11,24 @@
 	//calls method to establish connection to server
 	$mysqli = databaseConnection();
 
+  //makes sure sesssion variable is set, if not, logs out
+  verifyLogin();
+
 	//if submit button is clicked
 	if (isset($_POST["Submit"])) {
 
-      		$itemname = $_POST["Name"];
-      		$location = $_POST["LocationID"];
-      		$category = $_POST["CategoryID"];
-      		$quantity = $_POST["Quantity"];
+      $itemname = $_POST["Name"];
+      $location = $_POST["LocationID"];
+      $category = $_POST["CategoryID"];
+      $quantity = $_POST["Quantity"];
 
       //checks if item/location combination already exists
-			$itemCheck = mysqli_query("SELECT * FROM Inventory WHERE Name = ".$_POST['Name']." AND LocationID = ".$_POST['LocationID']."");
-			if(mysqli_num_rows($itemCheck) >= 1) {
+			$itemCheck = "SELECT * FROM Inventory WHERE Name = '".$itemname."' AND LocationID = '".$location."'";
+      $itemCheckResult = $mysqli->query($itemCheck);
+			if(mysqli_num_rows($itemCheckResult) >= 1) {
 				$_SESSION["error"] = "Item/Location combination already exists!";
 				header("Location: seniorProjectLanding.php");
+        exit;
 			}
 			else {
 				//pass
@@ -34,13 +39,13 @@
 			$itemQuery .= "(Name, LocationID, CategoryID, Quantity, LastQuantityUpdate, Username) ";
 			$itemQuery .= "VALUES (";
 			$itemQuery .= "'".$itemname."', ";
-      		$itemQuery .= "".$location.", ";
-      		$itemQuery .= "".$category.", ";
-      		$itemQuery .= "".$quantity.", ";
-      		$itemQuery .= "NOW(), ";
-      		$itemQuery .= "'".$_SESSION["Username"]."')";
+      $itemQuery .= "".$location.", ";
+      $itemQuery .= "".$category.", ";
+      $itemQuery .= "".$quantity.", ";
+      $itemQuery .= "NOW(), ";
+      $itemQuery .= "'".$_SESSION["Username"]."')";
 
-      		$itemResult = $mysqli->query($itemQuery);
+      $itemResult = $mysqli->query($itemQuery);
 
 			if ($itemResult) {
 				$_SESSION["alert"] = $itemname." has been added to Inventory!";
@@ -49,7 +54,7 @@
 			else {
         		$_SESSION["error"] = "Could not add item!";
         		// $_SESSION["error"] = '<script>console.log("'.$itemQuery.'")</script>';
-				header("Location: seniorProjectLanding.php");
+				    header("Location: seniorProjectLanding.php");
 			}
 	}
 
@@ -201,8 +206,37 @@
 
 .container {
 	    width: 90%;
-	    padding-top: 200px;
+	    padding-top: 100px;
 	    position: absolute-center;
+}
+
+/*styling for submit button*/
+.btn-primary {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #00336f;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #fff;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0069d9;
+  background-image: none;
+  border-color: #0062cc;
 }
 
   </style>
@@ -229,6 +263,8 @@
     </nav>
 
     <div class="container">
+      <h1 style="font-size: 75px" align="center">Add Item</h1>
+                &nbsp;
   			<div class="jumbotron">
   				<form action="seniorProjectAddItem.php" method="POST">
   					<div class="form-group">
