@@ -11,6 +11,9 @@
 	//calls method to establish connection to server
 	$mysqli = databaseConnection();
 
+  //verify that session ID exists
+  verifyLogin();
+
 	//if submit button is clicked
 	if (isset($_POST["Submit"])) {
 		//if all input fields are filled in and not blank
@@ -19,7 +22,7 @@
 			$location = $_POST["LocationName"];
 
 			//checks if location already exists
-			$locationCheck = mysqli_query("SELECT * FROM Location WHERE LocationName = ".$location."");
+			$locationCheck = mysqli_query("SELECT * FROM Location WHERE LocationName = '".$location."'");
 			if(mysqli_num_rows($locationCheck) >= 1) {
 				$_SESSION["error"] = "Location already exists!";
 				header("Location: seniorProjectLanding.php");
@@ -37,7 +40,7 @@
 			$locationResult = $mysqli->query($query);
 
 			if ($locationResult) {
-				$_SESSION["alert"] = $_POST["LocationName"]." has been added!";
+				$_SESSION["alert"] = $_POST["LocationName"]." has been added to Locations!";
 				header("Location: seniorProjectLanding.php");
 			}
 			else {
@@ -195,8 +198,37 @@
 
 .container {
 	    width: 90%;
-	    padding-top: 200px;
+	    padding-top: 100px;
 	    position: absolute-center;
+}
+
+/*styling for submit button*/
+.btn-primary {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #00336f;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #fff;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0069d9;
+  background-image: none;
+  border-color: #0062cc;
 }
 
   </style>
@@ -223,6 +255,8 @@
     </nav>
 
     <div class="container">
+            <h1 style="font-size: 75px" align="center">Add Location</h1>
+                &nbsp;
   			<div class="jumbotron">
   				<form action="seniorProjectAddLocation.php" method="POST">
   					<div class="form-group">
