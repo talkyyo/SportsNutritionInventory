@@ -27,6 +27,16 @@
 			$firstname = $_POST["FirstName"];
 			$lastname = $_POST["LastName"];
 
+			//checks if username already exists
+			$usernameCheck = mysqli_query("SELECT FROM User WHERE Username = ".$username."");
+			if(mysqli_num_rows($usernameCheck) >= 1) {
+				$_SESSION["error"] = "Username already exists!";
+				header("Location: seniorProjectCreateAccount.php");
+			}
+			else {
+				//pass
+			}
+
 			//if password and confirm password field match
 			if ($_POST["Password"] == $_POST["confirmPassword"]) {
 				//query to insert into User table
@@ -40,7 +50,7 @@
 
 				$result = $mysqli->query($query);
 
-				//query to insert into Login table, keeping the username and password combinations seperate from the User basic info
+				//query to insert into Login table, keeping the username and password combinations seperate from the User's basic info
 				$query2 = "INSERT INTO Login ";
 				$query2 .= "(Username, Password) ";
 				$query2 .= "VALUES ('";
@@ -51,7 +61,7 @@
 
 				if ($result && $result2) {
 					$_SESSION["alert"] = "User added!";
-					header("Location: seniorProjectLanding.php");
+					header("Location: seniorProjectLogin.php");
 				}
 				else {
 					$_SESSION["error"] = "Could not add user";
@@ -78,13 +88,50 @@
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
   </head>
+  <style>
+	.container {
+	    width: 90%;
+	    padding-top: 5px;
+	    position: absolute-center;
+	}
+
+	/*styling for submit button*/
+.btn-primary {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #00336f;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #fff;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0069d9;
+  background-image: none;
+  border-color: #0062cc;
+}
+  </style>
 
   &nbsp
 
-  	<body>
+  	<body style = "background-color: #00336f">
   		<div class="container">
   			<div class="jumbotron">
-  				<form class="form-horizontal" action="seniorProjectCreateAccount.php" method="POST">
+  				<h2 class="text-center">Create Account</h2>
+  				<form action="seniorProjectCreateAccount.php" method="POST">
   					<div class="form-group">
   					<label for="Username">Username:</label>
   					<input type="text" class="form-control" name="Username" id="Username" placeholder="Username" required>
@@ -103,11 +150,11 @@
 					</div>
 					<div class="form-group">
   					<label for="FirstName">First Name:</label>
-  					<input type="text" class="form-control" name="FirstName" id="FirstName" placeholder="FirstName" required>
+  					<input type="text" class="form-control" name="FirstName" id="FirstName" placeholder="First Name" required>
   					</div>
   					<div class="form-group">
   					<label for="LastName">Last Name:</label>
-  					<input type="text" class="form-control" name="LastName" id="LastName" placeholder="LastName" required>
+  					<input type="text" class="form-control" name="LastName" id="LastName" placeholder="Last Name" required>
   					</div>
   					<div class="form-group">
 						<button type="submit" name="Submit" class="btn btn-primary">Create Account</button>

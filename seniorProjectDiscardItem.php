@@ -11,6 +11,9 @@
 	//calls method to establish connection to server
 	$mysqli = databaseConnection();
 
+  //verify that session ID exists
+  verifyLogin();
+
   $itemID = $_GET['itemID'];
 
 	//if submit button is clicked
@@ -217,8 +220,37 @@
 
 .container {
 	    width: 90%;
-	    padding-top: 180px;
+	    padding-top: 100px;
 	    position: absolute-center;
+}
+
+/*styling for submit button*/
+.btn-primary {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #00336f;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #fff;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0069d9;
+  background-image: none;
+  border-color: #0062cc;
 }
 
   </style>
@@ -245,6 +277,8 @@
     </nav>
 
     <div class="container">
+      <h1 style="font-size: 75px" align="center">Discard Item</h1>
+                &nbsp;
   			<div class="jumbotron">
   				<?php
               if (isset($_GET["itemID"]) && $_GET["itemID"] !== "") {

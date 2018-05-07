@@ -11,6 +11,9 @@
 	//calls method to establish connection to server
 	$mysqli = databaseConnection();
 
+	//verify that session ID exists
+  	verifyLogin();
+
 	if(isset($_GET["itemID"]) && $_GET["itemID"] !== "") {
 		$deleteItem = $_GET["itemID"];
 

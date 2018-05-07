@@ -10,7 +10,9 @@
 
 	//calls method to establish connection to server
 	$mysqli = databaseConnection();
-    
+
+  verifyLogin();
+
   //create array to display Locations
   $locations = array();
 
@@ -59,6 +61,7 @@
   	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 	  <script src="assets/js/jquery.min.js"></script>
 	  <script src="bootstrap/js/bootstrap.min.js"></script>
+
   </head>
 
   <style>
@@ -222,6 +225,33 @@
   border-color: #0062cc;
 }
 
+
+#jumbo {
+  padding: 10px;
+}
+
+/*iPad table formatting*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+  table th:nth-child(7), td:nth-child(7) {
+  display: none;
+}
+  
+}
+
+/*iPhone table formatting*/
+@media 
+only screen and (max-width: 406px),
+(min-device-width: 414px) and (max-device-width: 736px)  {
+
+  #jumbo {
+    background-color:transparent !important;
+  }
+  
+}
+
   </style>
 
 <body>
@@ -256,7 +286,7 @@
           <ul class="sidebar-nav" id="sidebar">
           	<li class="sub-sidebar-brand"><a href="seniorProjectLanding.php">&middot;&nbsp;&nbsp;Inventory<i
                 class="fa fa-caret-down" aria-hidden="true"></i></a>
-            <li class="sub-sidebar-brand"><a href="#/Category">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Item<i
+            <li class="sub-sidebar-brand"><a href="#/Item">&nbsp;&nbsp;&middot;&nbsp;&nbsp;Item<i
                 class="fa fa-caret-down" aria-hidden="true"></i></a>
               <ul class="sub-menu">
                   <li class="sub-sidebar-brand"><a href="seniorProjectAddItem.php">&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;<i>Add Item</i><span class="sub_icon fa fa-hdd-o"></span></a></li>
@@ -271,7 +301,7 @@
 
                   var html = '';
                   for (var i = 0; i < locationList.length; i++) {
-                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectSidebarSearch.php?searchID=" + locationList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectLocationSidebarSearch.php?searchID=" + locationList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
                   }
                   document.write(html);
                   </script>
@@ -287,7 +317,7 @@
 
                   var html = '';
                   for (var i = 0; i < categoryList.length; i++) {
-                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectSidebarSearch.php?searchID=" + categoryList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectCategorySidebarSearch.php?searchID=" + categoryList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
                   }
                   document.write(html);
                   </script>   
@@ -304,7 +334,7 @@
 
                   var html = '';
                   for (var i = 0; i < locationList.length; i++) {
-                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectDiscardedSidebarSearch.php?searchID=" + locationList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectDiscardedLocationSidebarSearch.php?searchID=" + locationList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + locationList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
                   }
                   document.write(html);
                   </script>               
@@ -319,7 +349,7 @@
 
                   var html = '';
                   for (var i = 0; i < categoryList.length; i++) {
-                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectDiscardedSidebarSearch.php?searchID=" + categoryList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
+                    html += "<li class='sub-sidebar-brand'><a href='seniorProjectDiscardedCategorySidebarSearch.php?searchID=" + categoryList[i] + "'>&nbsp;&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;" + categoryList[i] + "<span class='sub_icon fa fa-hdd-o'></span></a></li>"
                   }
                   document.write(html);
                   </script>
@@ -331,7 +361,7 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <div class="container-fluid">
+            <div class="container">
                 <h1 style="font-size: 75px" align="center">Inventory</h1>
                 &nbsp;
               <form action='seniorProjectLanding.php' method='POST' class='form-group'>
@@ -364,11 +394,12 @@
                 </div>
               </form>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <div class="container-fluid">
-                  <div class="jumbotron">
-                    <table class="table table-bordered">
+              <div id='tablecontain' class="container">
+                  <div id='jumbo' class="jumbotron">
+                    <table class="table responsive table-bordered">
                       <thead>
-                        <th style="text-decoration: underline"><center>Item Name</center></th>
+                        <tr>
+                        <th style="text-decoration: underline"><center>Item</center></th>
                         <th style="text-decoration: underline"><center>Location</center></th>
                         <th style="text-decoration: underline"><center>Category</center></th>
                         <th style="text-decoration: underline"><center>Quantity</center></th>
@@ -376,9 +407,9 @@
                         <th style="text-decoration: underline"><center>Last Updated By</center></th>
                         <th style="text-decoration: underline"><center>Description</center></th>
                         <th style="text-decoration: underline"><center>Options</center></th>
+                      </tr>
                       </thead>
                       <tbody>
-                        <tr>
                           <?php
                               //query to show all items in inventory
                               $inventoryQuery = "SELECT * ";
@@ -389,13 +420,13 @@
                               if($inventoryResult && $inventoryResult->num_rows >= 1) {
                                   while($row = $inventoryResult->fetch_assoc()) {
                                     echo "<tr>";
-                                        echo "<th><center>".$row['Name']."</center></th>";
-                                        echo "<th><center>".$row['LocationName']."</center></th>";
-                                        echo "<th><center>".$row['CategoryName']."</center></th>";
-                                        echo "<th><center>".$row['Quantity']."</center></th>";
-                                        echo "<th><center>".$row['LastQuantityUpdate']."</center></th>";
-                                        echo "<th><center>".$row['FirstName'].' '.$row['LastName']."</center></center></th>";
-                                        echo "<th><center>".$row['DescriptionInventory']."</center></th>";
+                                        echo "<td><center>".$row['Name']."</center></td>";
+                                        echo "<td><center>".$row['LocationName']."</center></td>";
+                                        echo "<td><center>".$row['CategoryName']."</center></td>";
+                                        echo "<td><center>".$row['Quantity']."</center></td>";
+                                        echo "<td><center>".$row['LastQuantityUpdate']."</center></td>";
+                                        echo "<td><center>".$row['FirstName'].' '.$row['LastName']."</center></center></td>";
+                                        echo "<td><center>".$row['DescriptionInventory']."</center></td>";
                                         echo "<td><center><div class='dropdown'>";
                                           echo "<button class='btn btn-danger dropdown-toggle' type='button' data-toggle='dropdown'>Select Option <span class ='caret'></span></button>";
                                           echo "<ul class='dropdown-menu'>";
@@ -417,12 +448,10 @@
                                   echo "<th align='center'>No items found!</th>";
                               }
                           ?>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
-
             </div>
         </div>
         <!-- /#page-content-wrapper -->
@@ -444,6 +473,7 @@
     $('.sidebar-nav li a').click(function(){
   $(this).parent().toggleClass('active')
 });
+
 
     </script>
 

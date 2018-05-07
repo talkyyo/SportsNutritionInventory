@@ -41,11 +41,10 @@
 				}
 				else {
 					$_SESSION["error"] = "Username/Password does not match!";
-					echo("<script>console.log('PHP: ".$data."');</script>");
 					header("Location: seniorProjectLogin.php");
 					exit;
 				}
-			}			
+			}		
 		}
 	}
 ?>
@@ -67,15 +66,42 @@
 	    padding-top: 80px;
 	    position: absolute-center;
 	}
-  </style>
 
-  &nbsp
+	/*styling for submit button*/
+.btn-primary {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #00336f;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #00336f;
+  border-color: #fff;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:active, .btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #0069d9;
+  background-image: none;
+  border-color: #0062cc;
+}
+  </style>
 
 	<body style = "background-color: #00336f">
   	<!-- form for login -->
   		<div class="container">
-  			<div class="jumbotron" style="border: 2px solid red">
-  				<h4 class="text-center">Please Login</h4>
+  			<div class="jumbotron">
+  				<h2 class="text-center">Please Login</h2>
   				<form action="seniorProjectLogin.php" method="POST">
   					<div class="form-group">
   						<label for="Username">Username:</label>
