@@ -1,0 +1,1 @@
+As of this week, I have completed the back-end of the login and sign up pages. The front-end is a pretty basic design as of now, which will be updated later. I plan to be near completion of the back-end landing page of the inventory system as of the end of next week.
